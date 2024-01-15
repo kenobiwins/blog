@@ -7,7 +7,7 @@ const PostCreate = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    await axios.post("http://localhost:4000/posts", {
+    await axios.post(`${process.env.REACT_APP_BASE_URL}:4000/posts`, {
       title,
     });
 

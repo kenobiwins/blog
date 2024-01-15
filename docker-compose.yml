@@ -1,0 +1,61 @@
+version: '3'
+services:
+  comments:
+    build:
+      context: ./comments
+    image: comments-service:latest
+    container_name: comments-container
+    ports:
+      - "4001:4001"
+    networks:
+      - app-network
+    depends_on:
+      - event-bus
+
+  event-bus:
+    build:
+      context: ./event-bus
+    image: event-bus-service:latest
+    container_name: event-bus-container
+    ports:
+      - "4005:4005"
+    networks:
+      - app-network
+
+  moderation:
+    build:
+      context: ./moderation
+    image: moderation-service:latest
+    container_name: moderation-container
+    ports:
+      - "4003:4003"
+    networks:
+      - app-network
+
+  posts:
+    build:
+      context: ./posts
+    image: posts-service:latest
+    container_name: posts-container
+    ports:
+      - "4000:4000"
+    networks:
+      - app-network
+    depends_on:
+      - event-bus
+
+  query:
+    build:
+      context: ./query
+    image: query-service:latest
+    container_name: query-container
+    ports:
+      - "4002:4002"
+    depends_on:
+      - event-bus
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
